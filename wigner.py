@@ -30,9 +30,10 @@ def wigner_simulation(ns=[100, 500, 1000, 2000], seed=None, savepath=None):
 
         ax = axes[i]
         ax.hist(eigs, bins='auto', density=True, alpha=0.7)
-        ax.plot(xs, semicircle_density(xs), linewidth=2)
+        ax.plot(xs, semicircle_density(xs), linewidth=2, label='Semicircle PDF')
         ax.set_xlim(-2.2, 2.2)
         ax.set_title(f"n={n}")
+        ax.legend()
 
     # Hide unused subplots if grid > k
     for j in range(k, len(axes)):
@@ -43,9 +44,8 @@ def wigner_simulation(ns=[100, 500, 1000, 2000], seed=None, savepath=None):
 
     if savepath is not None:
         plt.savefig(savepath, bbox_inches='tight')
-
-    plt.show()
+        print(f"Saved plot to {savepath}")
     
 
 if __name__ == "__main__":
-    wigner_simulation(ns=[200, 1000, 10000, 200000], savepath="./plots/wigner_simulation.png")
+    wigner_simulation(ns=[30, 100, 500, 2000], savepath="./plots/wigner_simulation.png")

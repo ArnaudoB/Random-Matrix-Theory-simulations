@@ -43,18 +43,22 @@ def circular_law_simulation(ns=[100, 500, 1000, 2000], seed=0, savepath=None, la
         ax.set_xlim(-1.5, 1.5)
         ax.set_ylim(-1.5, 1.5)
         
-        ax.set_title(f"{law.capitalize()} simulation (n={n})")
+        ax.set_title(f"Simulation (n={n})")
 
     for j in range(k, len(axes)):
         axes[j].set_visible(False)
 
-    fig.suptitle(r"Circular law: eigenvalues of $\frac{1}{\sqrt{n}}G$")
+    if law == 'ginibre':
+        fig.suptitle(r"Circular law: eigenvalues of $\frac{1}{\sqrt{n}}G$ (Complex Ginibre)")
+    elif law == 'bernoulli':
+        fig.suptitle(r"Circular law: eigenvalues of $\frac{1}{\sqrt{n}}G$ (Bernoulli)")
+    else:
+        fig.suptitle(r"Circular law: eigenvalues of $\frac{1}{\sqrt{n}}G$")
     fig.tight_layout()
 
     if savepath is not None:
         plt.savefig(savepath, bbox_inches='tight')
-
-    plt.show()
+        print(f"Saved plot to {savepath}")
 
 
 def radial_cdf_error(eigs):
@@ -68,3 +72,7 @@ def radial_cdf_error(eigs):
     empirical_cdf = np.arange(1, n+1) / n
     theoretical_cdf = r_sorted**2
     return np.max(np.abs(empirical_cdf - theoretical_cdf))
+
+if __name__ == "__main__":
+    circular_law_simulation(ns=[10, 100, 500, 2000], seed=0, savepath="./plots/circular_law_ginibre.png", law='ginibre')
+    circular_law_simulation(ns=[10, 100, 500, 2000], seed=0, savepath="./plots/circular_law_bernoulli.png", law='bernoulli')
