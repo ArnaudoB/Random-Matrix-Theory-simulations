@@ -1,10 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-import math
 from samplers import sample_covariance
 from densities import marchenko_pastur_density
-
 
 def marchenko_pastur_simulation(ns=[500, 1000, 2000], cs=[0.2, 0.5, 0.8], seed=None, savepath=None):
     """
@@ -13,7 +11,6 @@ def marchenko_pastur_simulation(ns=[500, 1000, 2000], cs=[0.2, 0.5, 0.8], seed=N
     """
 
     rng = np.random.default_rng(seed)
-
 
     # Choose grid automatically (as square as possible)
     n_cols = len(ns)
@@ -45,8 +42,5 @@ def marchenko_pastur_simulation(ns=[500, 1000, 2000], cs=[0.2, 0.5, 0.8], seed=N
         plt.savefig(savepath, bbox_inches='tight')
     plt.show()
 
-
-
 if __name__ == "__main__":
     marchenko_pastur_simulation(ns=[50, 250, 2000], cs=[0.2, 0.5, 0.8], savepath="./plots/marchenko_pastur_simulation.png")
-

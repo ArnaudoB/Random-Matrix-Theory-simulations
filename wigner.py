@@ -5,7 +5,6 @@ import math
 from samplers import sample_gue
 from densities import semicircle_density
 
-
 def wigner_simulation(ns=[100, 500, 1000, 2000], seed=None, savepath=None):
     """
     Simulate the Wigner semicircle distribution by sampling GUE matrices

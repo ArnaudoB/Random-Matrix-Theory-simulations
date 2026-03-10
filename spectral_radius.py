@@ -4,7 +4,6 @@ from tqdm import tqdm
 import math
 from densities import gumbel_density
 
-
 def fluctuations_spectral_radius_ginibre(
     ns=(200, 500, 1000, 1500),
     N_exp=10000,

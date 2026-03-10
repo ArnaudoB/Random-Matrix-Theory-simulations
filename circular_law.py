@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from samplers import sample_ginibre, sample_bernoulli
+from samplers import sample_ginibre, sample_bernoulli, sample_sparse_matrix
 from densities import circular_law_density
 from tqdm import tqdm
 import math
@@ -60,7 +60,6 @@ def circular_law_simulation(ns=[100, 500, 1000, 2000], seed=0, savepath=None, la
         plt.savefig(savepath, bbox_inches='tight')
         print(f"Saved plot to {savepath}")
 
-
 def radial_cdf_error(eigs):
     """
     If the circular law holds, the empirical CDF of the radius of the eigenvalues should converge to F(r) = r^2 for r in [0,1]. 
@@ -73,24 +72,7 @@ def radial_cdf_error(eigs):
     theoretical_cdf = r_sorted**2
     return np.max(np.abs(empirical_cdf - theoretical_cdf))
 
-def sample_sparse_matrix(n, alpha=0.5, rng=None, dist='normal'):
-    if rng is None:
-        rng = np.random.default_rng()
-        
-    rho = n**(-1 + alpha)
-    mask = rng.random((n, n)) < rho
-    
-    if dist == 'normal':
-        X = (rng.normal(0, 1, (n, n)) + 1j * rng.normal(0, 1, (n, n))) / np.sqrt(2)
-    elif dist == 'bernoulli':
-        X = (rng.choice([-1, 1], (n, n)) + 1j * rng.choice([-1, 1], (n, n))) / np.sqrt(2)
-    else:
-        raise ValueError("Unsupported base distribution")
-        
-    N_rho = mask * X
-    return N_rho, rho
-
-def circular_law_simulation_alphas(n=1000, alphas=[0.5, 0.2, 0.0], seed=42):
+def circular_law_simulation_sparse(n=1000, alphas=[0.5, 0.2, 0.0], seed=42):
     
     rng = np.random.default_rng(seed)
     
@@ -130,11 +112,6 @@ def circular_law_simulation_alphas(n=1000, alphas=[0.5, 0.2, 0.0], seed=42):
     print(f"\nFigure saved to: {savepath}")
 
     plt.show()
-
-if __name__ == "__main__":
-    
-    circular_law_simulation_alphas(n=1000, alphas=[0.5, 0.2, 0.0])
-
 
 if __name__ == "__main__":
     circular_law_simulation(ns=[10, 100, 500, 2000], seed=0, savepath="./plots/circular_law_ginibre.png", law='ginibre')
